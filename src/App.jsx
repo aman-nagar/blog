@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter basename="/blog/">
+    <BrowserRouter basename="/blog">
       <Header user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
