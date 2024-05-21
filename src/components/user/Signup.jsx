@@ -1,45 +1,66 @@
 // src/components/user/Signup.jsx
 import React, { useState } from "react";
 import "../../styles/signup.css";
-export default function Signup() {
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
-  const formSubmitHandler = (e) => {
+export default function Signup() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(userName);
-    console.log(userEmail);
-    console.log(userPassword);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      console.log("User created:", user);
+
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          firstName: fname,
+          lastName: lname,
+        });
+      }
+
+      console.log("user Registered Successfully");
+    } catch (error) {
+      console.log("Error signing up:", error.message);
+    }
   };
 
   return (
     <section className="signup">
       <div className="signup-form-area">
         <h6>Sign Up</h6>
-        <form action="" className="signup-form">
+
+        <form className="signup-form" onSubmit={handleRegister}>
           <input
             type="text"
-            placeholder="name"
-            onChange={(e) => setUserName(e.target.value)}
+            placeholder="First Name"
+            onChange={(e) => setFname(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            onChange={(e) => setLname(e.target.value)}
           />
           <input
             type="email"
-            name=""
-            id=""
-            placeholder="e-mail"
-            onChange={(e) => setUserEmail(e.target.value)}
+            placeholder="E-mail"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            name="password"
-            id=""
-            placeholder="password"
+            placeholder="Password"
             required
-            onChange={(e) => setUserPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
+          <input type="submit" value="Sign Up" />
         </form>
-        <input type="submit" value="Sign Up" onClick={formSubmitHandler} />
       </div>
     </section>
   );
