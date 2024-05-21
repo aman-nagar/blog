@@ -1,0 +1,36 @@
+/* src/components/layout/header.css */
+header {
+  width: 100vw;
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  background-color: #0b0c0e;
+  color: white;
+}
+
+header p {
+  font-size: 35px;
+  cursor: pointer;
+}
+
+header nav ul {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  cursor: pointer;
+  list-style-type: none;
+}
+
+header nav ul li {
+  padding: 5px 20px; /* Add consistent padding to prevent layout shift */
+}
+
+header nav ul li:hover {
+}
+
+header .user ul {
+  list-style-type: none;
+  cursor: pointer;
+}
